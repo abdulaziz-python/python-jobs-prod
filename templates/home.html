@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <h1 class="hero-title">O'z karyerangizni boshlang</h1>
+        <p class="hero-subtitle">O'zbekistondagi eng yaxshi Python ish imkoniyatlarini kashf eting</p>
+        <form action="{% url 'search_jobs' %}" method="get" class="search-form">
+            <div class="form-group">
+                <input type="text" name="q" placeholder="Python ishlarini qidiring..." class="form-input" required>
+            </div>
+            <button type="submit" class="button button-primary">Qidirish</button>
+        </form>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <h2 class="section-title" id="sonngi">So'nggi ish e'lonlari</h2>
+        <div class="job-grid">
+            {% for job in recent_jobs %}
+            <article class="job-card">
+                <div class="job-card-content">
+                    <h3 class="job-title">{{ job.title }}</h3>
+                    <p class="job-company">{{ job.company.name }}</p>
+                    <div class="job-meta">
+                        <span class="job-location">{{ job.get_location_type_display }}{% if job.location %} - {{ job.location }}{% endif %}</span>
+                        <span class="job-salary">{{ job.salary }}</span>
+                    </div>
+                    <div class="job-tags">
+                        {% for tag in job.tags.split %}
+                        <span class="tag">#{{ tag }}</span>
+                        {% endfor %}
+                    </div>
+                    <a href="{% url 'job_detail' job.id %}" class="button button-secondary">
+                        Batafsil
+                    </a>
+                </div>
+            </article>
+            {% empty %}
+            <p class="no-jobs">Hozircha mavjud ish e'lonlari yo'q.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="section cta-section">
+    <div class="container">
+        <h2 class="section-title">Python dasturchilarga ish taklif qilyapsizmi?</h2>
+        <p class="cta-text">Ish e'loningizni joylashtiring va O'zbekistondagi minglab malakali Python dasturchilarga yeting.</p>
+        <a href="{% url 'create_job' %}" class="button button-primary">
+            Ish e'loni joylashtirish
+        </a>
+    </div>
+</section>
+{% endblock %}

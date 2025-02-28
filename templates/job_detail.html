@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<div class="job-detail">
+    <div class="container">
+        <div class="job-header">
+            <h1 class="job-title">{{ job.title }}</h1>
+            <p class="job-company">{{ job.company.name }}</p>
+            <div class="job-meta">
+                <span class="job-location">
+                    <i class="fas fa-map-marker-alt"></i> {{ job.get_location_type_display }}
+                    {% if job.location %} - {{ job.location }}{% endif %}
+                </span>
+                <span class="job-salary">
+                    <i class="fas fa-money-bill-wave"></i> {{ job.salary }}
+                </span>
+                <span class="job-type">
+                    <i class="fas fa-briefcase"></i> {{ job.get_job_type_display }}
+                </span>
+            </div>
+        </div>
+
+        <div class="job-content">
+            <div class="job-section">
+                <h2 class="section-title">Ish tavsifi</h2>
+                <div class="job-description">
+                    {{ job.description|linebreaks }}
+                </div>
+            </div>
+
+            <div class="job-section">
+                <h2 class="section-title">Talablar</h2>
+                <div class="job-requirements">
+                    {{ job.requirements|linebreaks }}
+                </div>
+            </div>
+
+            <div class="job-section">
+                <h2 class="section-title">Qo'shimcha ma'lumotlar</h2>
+                <ul class="job-details">
+                    <li><strong>Tajriba darajasi:</strong> {{ job.get_experience_level_display }}</li>
+                    <li><strong>Ish turi:</strong> {{ job.get_job_type_display }}</li>
+                    <li><strong>Joylashuv turi:</strong> {{ job.get_location_type_display }}</li>
+                </ul>
+            </div>
+
+            <div class="job-tags">
+                {% for tag in job.tags.split %}
+                <span class="tag">#{{ tag }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="job-actions">
+                {% if user.is_authenticated and not user.company %}
+                <a href="{% url 'apply_job' job.id %}" class="button button-primary">
+                    Ariza yuborish
+                </a>
+                {% elif not user.is_authenticated %}
+                <p class="login-prompt">Ariza yuborish uchun tizimga kirishingiz kerak.</p>
+                <a href="{% url 'login' %}" class="button button-secondary">Tizimga kirish</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.job-detail {
+    padding: 2rem 0;
+}
+
+.job-header {
+    margin-bottom: 2rem;
+}
+
+.job-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+}
+
+.job-company {
+    font-size: 1.25rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 1rem;
+}
+
+.job-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+}
+
+.job-content {
+    background-color: var(--color-surface);
+    border-radius: 0.5rem;
+    padding: 2rem;
+    box-shadow: var(--shadow-md);
+}
+
+.job-section {
+    margin-bottom: 2rem;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.job-description,
+.job-requirements {
+    line-height: 1.6;
+}
+
+.job-details {
+    list-style-type: none;
+    padding: 0;
+}
+
+.job-details li {
+    margin-bottom: 0.5rem;
+}
+
+.job-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+}
+
+.tag {
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.875rem;
+}
+
+.job-actions {
+    margin-top: 2rem;
+}
+
+.login-prompt {
+    margin-bottom: 1rem;
+    color: var(--color-text-secondary);
+}
+</style>
+{% endblock %}
+

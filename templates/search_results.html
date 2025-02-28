@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<div class="section-diagonal">
+    <div class="container">
+        <h1 class="text-center mb-8">Ish qidirish</h1>
+        
+        <div class="search-container">
+            <form action="{% url 'search_jobs' %}" method="get" class="search-form">
+                <input 
+                    type="text" 
+                    name="q" 
+                    class="search-input" 
+                    placeholder="Python ishlarini qidiring..." 
+                    value="{{ query }}"
+                    required
+                >
+                <button type="submit" class="button button-primary">
+                    Qidirish
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <div class="container">
+        {% if results %}
+        <div class="job-grid">
+            {% for job in results %}
+            <article class="job-card animate-fade-in">
+                <div class="p-6">
+                    <h3 class="text-xl font-bold mb-2">{{ job.title }}</h3>
+                    <p class="text-secondary mb-4">{{ job.company.name }}</p>
+                    
+                    <div class="flex justify-between text-sm text-tertiary mb-4">
+                        <span>{{ job.get_location_type_display }}</span>
+                        <span>{{ job.salary }}</span>
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        {% for tag in job.tags.split %}
+                        <span class="px-2 py-1 bg-surface-variant rounded-md text-sm">
+                            #{{ tag }}
+                        </span>
+                        {% endfor %}
+                    </div>
+                    
+                    <a href="{% url 'job_detail' job.id %}" class="button button-secondary w-full batafsil">
+                        Batafsil
+                    </a>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-12">
+            <h3 class="text-xl mb-2">Hech narsa topilmadi</h3>
+            <p class="text-secondary">Boshqa kalit so'zlar bilan qidirib ko'ring</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+

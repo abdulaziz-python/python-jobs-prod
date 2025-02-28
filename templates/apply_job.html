@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<div class="apply-job">
+    <div class="container">
+        <h1 class="apply-job-title">Ishga ariza yuborish</h1>
+        <h2 class="job-title">{{ job.title }}</h2>
+        <p class="job-company">{{ job.company.name }}</p>
+
+        <form method="post" enctype="multipart/form-data" class="apply-form">
+            {% csrf_token %}
+            
+            {% for field in form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}" class="form-label">
+                        {{ field.label }}
+                    </label>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <small class="form-help">{{ field.help_text }}</small>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <div class="form-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="button button-primary">Arizani yuborish</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.apply-job {
+    padding: 2rem 0;
+}
+
+.apply-job-title {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.job-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.job-company {
+    font-size: 1.25rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.apply-form {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: var(--color-surface);
+    border-radius: 0.5rem;
+    padding: 2rem;
+    box-shadow: var(--shadow-md);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.form-help {
+    display: block;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    margin-top: 0.25rem;
+}
+
+.form-error {
+    color: var(--color-accent);
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+textarea {
+    min-height: 150px;
+}
+</style>
+{% endblock %}
+

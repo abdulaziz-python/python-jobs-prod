@@ -1,0 +1,91 @@
+{% load i18n %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}PythonJobs.uz{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/design-system.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-inner">
+                <a href="{% url 'home' %}" class="logo">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 2L2 9L16 16L30 9L16 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M2 23L16 30L30 23" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M2 16L16 23L30 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="logo-text">PythonJobs.uz</span>
+                </a>
+                
+                <nav class="nav">
+                    <a href="{% url 'home' %}" class="nav-link">Bosh sahifa</a>
+                    <a href="{% url 'search_jobs' %}" class="nav-link">Ishlar</a>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'dashboard' %}" class="nav-link">Boshqaruv paneli</a>
+                        <form method="post" action="{% url 'logout' %}" class="logout-form">
+                            {% csrf_token %}
+                            <button type="submit" class="button button-secondary">Chiqish</button>
+                        </form>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="button button-secondary">Kirish</a>
+                        <a href="{% url 'signup' %}" class="button button-primary">Ro'yxatdan o'tish</a>
+                    {% endif %}
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div class="message message-{{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>PythonJobs.uz</h3>
+                    <p>O'zbekistondagi eng yaxshi Python dasturchilar va ish o'rinlari</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Havolalar</h3>
+                    <ul class="footer-links">
+                        <li><a href="#" class="footer-link">Biz haqimizda</a></li>
+                        <li><a href="#" class="footer-link">Foydalanish shartlari</a></li>
+                        <li><a href="#" class="footer-link">Maxfiylik siyosati</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Bog'lanish</h3>
+                    <ul class="footer-links">
+                        <li><a href="https://t.me/pythonnews_uzbekistan" class="footer-link">Telegram kanal</a></li>
+                        <li><a href="https://t.me/abdulaziz_python" class="footer-link">Yordam</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; {% now "Y" %} PythonJobs.uz. Barcha huquqlar himoyalangan.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

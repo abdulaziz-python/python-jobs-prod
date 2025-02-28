@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1 class="neon-text">Company Dashboard</h1>
+    
+    <a href="{% url 'create_job' %}" class="neon-border">Create New Job Offer</a>
+    
+    <h2>Your Job Listings</h2>
+    <div class="job-listings">
+        {% for job in job_listings %}
+        <div class="job-card glass-box">
+            <h3>{{ job.title }}</h3>
+            <p>Views: {{ job.views }}</p>
+            <p>Created: {{ job.created_at|date:"M d, Y" }}</p>
+            <div class="job-actions">
+                <a href="{% url 'edit_job' job.id %}" class="neon-border">Edit</a>
+                <a href="{% url 'delete_job' job.id %}" class="neon-border" onclick="return confirm('Are you sure you want to delete this job listing?')">Delete</a>
+            </div>
+        </div>
+        {% empty %}
+        <p>You haven't created any job listings yet.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .job-listings {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        margin-top: 40px;
+    }
+    
+    .job-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+    
+    .job-actions a {
+        padding: 5px 10px;
+        font-size: 14px;
+    }
+</style>
+{% endblock %}
+
+[V0_FILE]html:file="templates/create_job.html" isMerged="true"
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1 class="neon-text">{% if job %}Edit{% else %}Create{% endif %} Job Listing</h1>
+    
+    <form method="post" class="job-form glass-box">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" required {% if job %}value="{{ job.title }}"{% endif %}>
+        </div>
+        
+        <div class="form-group">
+            <label for="tags">Tags (comma-separated)</label>
+            <input type="text" id="tags" name="tags" required {% if job %}value="{{ job.tags }}"{% endif %}>
+        </div>
+        
+        <div class="form-group">
+            <label for="experience_level">Experience Level</label>
+            <select id="experience_level" name="experience_level" required>
+                {% for value, label in experience_choices %}
+                <option value="{{ value }}" {% if job and job.experience_level == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="job_type">Job Type</label>
+            <select id="job_type" name="job_type" required>
+                {% for value, label in job_type_choices %}
+                <option value="{{ value }}" {% if job and job.job_type == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="location_type">Location Type</label>
+            <select id="location_type" name="location_type" required>
+                {% for value, label in location_type_choices %}
+                <option value="{{ value }}" {% if job and job.location_type == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="location">Location (if applicable)</label>
+            <input type="text" id="location" name="location" {% if job %}value="{{ job.location }}"{% endif %}>
+        </div>
+        
+        <div class="form-group">
+            <label for="salary">Salary</label>
+            <input type="text" id="salary" name="salary" required {% if job %}value="{{ job.salary }}"{% endif %}>
+        </div>
+        
+        <div class="form-group">
+            <label for="requirements">Requirements</label>
+            <textarea id="requirements" name="requirements" required>{% if job %}{{ job.requirements }}{% endif %}</textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" required>{% if job %}{{ job.description }}{% endif %}</textarea>
+        </div>
+        
+        <button type="submit" class="neon-border">{% if job %}Update{% else %}Create{% endif %} Job Listing</button>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .job-form {
+        max-width: 600px;
+        margin: 40px auto;
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--text-color);
+        border: none;
+        border-radius: 5px;
+    }
+    
+    .form-group textarea {
+        height: 150px;
+    }
+</style>
+{% endblock %}

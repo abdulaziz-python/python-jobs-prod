@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<div class="container">
+    <h1 class="section-title">{% if job %}Ish e'lonini tahrirlash{% else %}Yangi ish e'loni yaratish{% endif %}</h1>
+    
+    <form method="post" class="job-form card">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="title" class="form-label">Lavozim nomi</label>
+            <input type="text" id="title" name="title" class="form-input" required {% if job %}value="{{ job.title }}"{% endif %} placeholder="Masalan: Senior Python dasturchi">
+        </div>
+        
+        <div class="form-group">
+            <label for="tags" class="form-label">Teglar (vergul bilan ajratilgan)</label>
+            <input type="text" id="tags" name="tags" class="form-input" required {% if job %}value="{{ job.tags }}"{% endif %} placeholder="Masalan: python, django, rest-api">
+        </div>
+        
+        <div class="form-group">
+            <label for="experience_level" class="form-label">Tajriba darajasi</label>
+            <select id="experience_level" name="experience_level" class="form-select" required>
+                {% for value, label in experience_choices %}
+                <option value="{{ value }}" {% if job and job.experience_level == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="job_type" class="form-label">Ish turi</label>
+            <select id="job_type" name="job_type" class="form-select" required>
+                {% for value, label in job_type_choices %}
+                <option value="{{ value }}" {% if job and job.job_type == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="location_type" class="form-label">Joylashuv turi</label>
+            <select id="location_type" name="location_type" class="form-select" required>
+                {% for value, label in location_type_choices %}
+                <option value="{{ value }}" {% if job and job.location_type == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="location" class="form-label">Joylashuv (agar mavjud bo'lsa)</label>
+            <input type="text" id="location" name="location" class="form-input" {% if job %}value="{{ job.location }}"{% endif %} placeholder="Masalan: Toshkent, O'zbekiston">
+        </div>
+        
+        <div class="form-group">
+            <label for="salary" class="form-label">Maosh</label>
+            <input type="text" id="salary" name="salary" class="form-input" required {% if job %}value="{{ job.salary }}"{% endif %} placeholder="Masalan: $2000 - $3000 oyiga">
+        </div>
+        
+        <div class="form-group">
+            <label for="requirements" class="form-label">Talablar</label>
+            <textarea id="requirements" name="requirements" class="form-textarea" required placeholder="Ish uchun zarur bo'lgan bilim va ko'nikmalarni kiriting">{% if job %}{{ job.requirements }}{% endif %}</textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="description" class="form-label">Ish tavsifi</label>
+            <textarea id="description" name="description" class="form-textarea" required placeholder="Ish haqida batafsil ma'lumot bering">{% if job %}{{ job.description }}{% endif %}</textarea>
+        </div>
+        
+        <button type="submit" class="button button-primary">
+            {% if job %}Ish e'lonini yangilash{% else %}Ish e'lonini yaratish{% endif %}
+        </button>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .job-form {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: var(--spacing-xl);
+    }
+    
+    .form-group {
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    .form-label {
+        display: block;
+        margin-bottom: var(--spacing-xs);
+        font-weight: 600;
+        color: var(--color-text);
+    }
+    
+    .form-input,
+    .form-select,
+    .form-textarea {
+        width: 100%;
+        padding: var(--spacing-sm);
+        font-size: var(--font-size-base);
+        background-color: var(--color-surface);
+        color: var(--color-text);
+        border: 1px solid var(--color-border);
+        border-radius: var(--border-radius);
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+        outline: none;
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+    }
+    
+    .form-textarea {
+        min-height: 150px;
+        resize: vertical;
+    }
+    
+    .form-select {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 20px;
+        padding-right: 40px;
+    }
+    
+    .button-primary {
+        width: 100%;
+        padding: var(--spacing-md);
+        font-size: var(--font-size-lg);
+        font-weight: 600;
+    }
+    
+    @media (max-width: 768px) {
+        .job-form {
+            padding: var(--spacing-lg);
+        }
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('.job-form');
+    const inputs = form.querySelectorAll('input, select, textarea');
+
+    inputs.forEach(input => {
+        input.addEventListener('focus', function() {
+            this.parentElement.classList.add('focused');
+        });
+
+        input.addEventListener('blur', function() {
+            if (this.value === '') {
+                this.parentElement.classList.remove('focused');
+            }
+        });
+
+        if (input.value !== '') {
+            input.parentElement.classList.add('focused');
+        }
+    });
+
+    form.addEventListener('submit', function(e) {
+        let isValid = true;
+        inputs.forEach(input => {
+            if (input.required && input.value.trim() === '') {
+                isValid = false;
+                input.classList.add('error');
+            } else {
+                input.classList.remove('error');
+            }
+        });
+
+        if (!isValid) {
+            e.preventDefault();
+            alert('Iltimos, barcha majburiy maydonlarni to'ldiring.');
+        }
+    });
+});
+</script>
+{% endblock %}

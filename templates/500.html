@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}500 - {% trans "Server Error" %}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full text-center">
+        <h1 class="text-9xl font-bold text-[#20123A] dark:text-white">500</h1>
+        <h2 class="mt-6 text-3xl font-bold text-gray-900 dark:text-white">
+            {% trans "Server Error" %}
+        </h2>
+        <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+            {% trans "Sorry, something went wrong on our end. Please try again later." %}
+        </p>
+        <div class="mt-6">
+            <a href="{% url 'home' %}" class="button-primary">
+                {% trans "Go back home" %}
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
