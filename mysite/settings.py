@@ -13,7 +13,8 @@ if not BASE_URL:
 
 SECRET_KEY = 'your-secret-key'
 
-DEBUG = True
+DEBUG = False
+
 
 ALLOWED_HOSTS = ['*']
 
