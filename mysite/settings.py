@@ -67,10 +67,15 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',  # Database name from your URL
+        'USER': 'postgres',  # Username from your URL
+        'PASSWORD': 'mvd5JOnHoI0xllOq',  # Password from your URL
+        'HOST': 'stably-saintly-crappie.data-1.use1.tembo.io',  # Host from your URL
+        'PORT': '5432',  # Port from your URL
     }
 }
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
