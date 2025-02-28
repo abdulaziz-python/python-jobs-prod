@@ -32,7 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'projects',
-    '"vercel",
+    "vercel",
 ]
 
 MIDDLEWARE = [
@@ -141,7 +141,8 @@ AUTH_USER_MODEL = 'projects.CustomUser'
 
 CSRF_TRUSTED_ORIGINS = [
     'https://1e8e-213-230-92-56.ngrok-free.app',
-    'https://localhost:8000'
+    'https://localhost:8000',
+    'https://pyjobs.onrender.com',
     'https://8000-idx-course-1736610940535.cluster-blu4edcrfnajktuztkjzgyxzek.cloudworkstations.dev',
     'https://9000-idx-course-1736610940535.cluster-blu4edcrfnajktuztkjzgyxzek.cloudworkstations.dev',
 ]
