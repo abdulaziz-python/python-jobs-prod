@@ -15,14 +15,7 @@ SECRET_KEY = 'your-secret-key'
 
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    '8000-idx-course-1736610940535.cluster-blu4edcrfnajktuztkjzgyxzek.cloudworkstations.dev',
-    'localhost',
-    'pyjobs.onrender.com'
-    '127.0.0.1',
-    '1e8e-213-230-92-56.ngrok-free.app',
-    'https://9000-idx-course-1736610940535.cluster-blu4edcrfnajktuztkjzgyxzek.cloudworkstations.dev'
-]
+ALLOWED_HOSTS = ['*']
 
 
 INSTALLED_APPS = [
