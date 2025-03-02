@@ -64,13 +64,14 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',  # Database name from your URL
-        'USER': 'postgres',  # Username from your URL
-        'PASSWORD': 'mvd5JOnHoI0xllOq',  # Password from your URL
-        'HOST': 'stably-saintly-crappie.data-1.use1.tembo.io',  # Host from your URL
-        'PORT': '5432',  # Port from your URL
+        'NAME': 'pyjobs',
+        'USER': 'pyjobs_user',
+        'PASSWORD': 'yxFDAWFP5i1kbr8XDl3hBwVoPSQ0VRMR',
+        'HOST': 'dpg-cv26bthu0jms738qlql0-a.oregon-postgres.render.com',
+        'PORT': '5432', 
     }
 }
+
 
 
 AUTH_PASSWORD_VALIDATORS = [
